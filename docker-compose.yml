@@ -6,10 +6,6 @@ services:
     container_name: "java21-app"
     ports:
       - "8080:8080"
-    # Se precisar de variáveis de ambiente:
-    # environment:
-    #   - SPRING_PROFILES_ACTIVE=prod
-    #   - ALGUMA_VAR=valor
-    # volumes, se necessário
-    # volumes:
-    #   - ./alguma-pasta:/path/no/container
+    environment:
+      - SPRING_PROFILES_ACTIVE=prod
+      - SENHA_EMAIL=valor
