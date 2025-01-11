@@ -3,7 +3,10 @@ package com.vbuenor.envio_notificacao_cliente.business;
 import com.vbuenor.envio_notificacao_cliente.dto.NotificacaoDTO;
 import jakarta.mail.*;
 import jakarta.mail.internet.MimeMessage;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
@@ -11,21 +14,26 @@ import org.springframework.stereotype.Service;
 import static com.vbuenor.envio_notificacao_cliente.business.MontaCorpoEmailBusiness.montarTextoEmail;
 
 @Service
+@Log4j2
+@RequiredArgsConstructor
 public class EnvioNotificacaoBusiness {
 
-    @Autowired
-    private JavaMailSender mailSender;
+    private final JavaMailSender mailSender;
 
-    public static final String ASSUNTO = "Teste";
+    @Value("${spring.mail.username}")
+    private String emailOrigem;
+
+    public static final String ASSUNTO = "Solução para o Reajuste do Plano de Saúde da Sua Empresa";
     public static final String UTF_8 = "UTF-8";
+
 
     public void enviarNotificacao(NotificacaoDTO request) {
 
         enviarEmail(
-                request.getEmailOrigem(),
+                emailOrigem,
                 request.getEmailDestinatario(),
                 ASSUNTO,
-                montarTextoEmail(request.getNomeCliente())
+                montarTextoEmail(request.getNomeCliente(), request.getNomeEmpresa())
         );
     }
 
@@ -41,9 +49,9 @@ public class EnvioNotificacaoBusiness {
             helper.setText(texto, false);
 
             mailSender.send(mensagem);
-            System.out.println("[OK] E-mail enviado com sucesso!");
+            log.info("[OK] E-mail enviado com sucesso!");
         } catch (MessagingException e) {
-            System.out.println("[ERRO] Falha ao enviar e-mail: " + e.getMessage());
+            log.error("[ERRO] Falha ao enviar e-mail: " + e.getMessage());
         }
     }
 
