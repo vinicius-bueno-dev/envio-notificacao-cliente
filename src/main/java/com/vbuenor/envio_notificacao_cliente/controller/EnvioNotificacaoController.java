@@ -2,6 +2,7 @@ package com.vbuenor.envio_notificacao_cliente.controller;
 
 import com.vbuenor.envio_notificacao_cliente.business.EnvioNotificacaoBusiness;
 import com.vbuenor.envio_notificacao_cliente.dto.NotificacaoDTO;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -16,11 +17,11 @@ import org.springframework.web.bind.annotation.*;
 
 @Tag(name = "Notificações", description = "API para envio de notificações (e-mail/WhatsApp) para clientes")
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/v1/notificacoes")
 public class EnvioNotificacaoController {
 
-    @Autowired
-    private EnvioNotificacaoBusiness envioNotificacaoBusiness;
+    private final EnvioNotificacaoBusiness envioNotificacaoBusiness;
 
     @Operation(
             summary = "Envio de notificação",
