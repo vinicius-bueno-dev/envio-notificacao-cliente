@@ -40,6 +40,7 @@ public class EnvioNotificacaoBusiness {
         try {
 
             MimeMessage mensagem = mailSender.createMimeMessage();
+
             MimeMessageHelper helper = new MimeMessageHelper(mensagem, UTF_8);
 
             helper.setFrom(from);
@@ -48,7 +49,9 @@ public class EnvioNotificacaoBusiness {
             helper.setText(texto, false);
 
             mailSender.send(mensagem);
+
             log.info("[OK] E-mail enviado com sucesso!");
+
         } catch (MessagingException e) {
             log.error("[ERRO] Falha ao enviar e-mail: " + e.getMessage());
         }
